@@ -30,3 +30,17 @@ $(".list-group").on("click", 'button.cityButton', function() {
             console.log(response)
         })
 })
+
+
+// h2 name of city, current date and icon
+// p temp
+// p wind
+// p humidity
+
+// 5-day Forecast
+// Some kind of array to loop through?
+// Date
+// i Icon
+// p temp
+// p wind
+// p humidity
