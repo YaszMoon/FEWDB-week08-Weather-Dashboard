@@ -1,13 +1,22 @@
+// Function to create city buttons
+
+function searchHistory(city) {
+  var Button = $('<button type="button" class="cityButton">');
+  Button.attr("data-city", city);
+  Button.text(city);
+  return Button;
+}
+
 // Search
 // When search button clicked
 // Input added to button and prepended to area below button
 $("#search-button").on("click", function (event) {
   event.preventDefault();
-  var newButton = $('<button type="button" class="cityButton">');
+  // Grab city name
   var searchInput = $("#search-input").val();
-  newButton.attr("data-city", searchInput);
-  newButton.text(searchInput);
-
+  // Make new button
+  var newButton = searchHistory(searchInput);
+  // Add to history
   $("#history").prepend(newButton);
 });
 
