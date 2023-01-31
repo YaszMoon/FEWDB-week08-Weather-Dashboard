@@ -19,38 +19,94 @@ $("#search-button").on("click", function (event) {
 $(".list-group").on("click", "button.cityButton", function () {
   console.log("here");
 
+  $('#today').empty()
+  $('#forecast').empty()
+
   var city = $(this).attr("data-city");
+  var apiKey = "5fecb9a931136489a4d6d7443df317a7";
   var queryURL =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
     city +
-    "&appid=5fecb9a931136489a4d6d7443df317a7";
+    "&appid=" +
+    apiKey;
 
   $.ajax({
     url: queryURL,
     method: "GET",
-  }).then(function (response) {
-    console.log(response);
+  }).then(function (responseC) {
+    console.log(responseC);
 
     var todayDate = moment().format("D MMM YYYY");
     var todayCity = $("<h2 class='mt-1 h3'>");
     todayCity.text(city + " " + todayDate);
     // Add icon to the above
-    
+
     var currentTemp = $("<p>");
-    var conversion = response.main.temp - 273.15
-    conversion = conversion.toFixed(2)
-    currentTemp.text('Temperature: ' + conversion + ' °C')
+    var currentTempConv = responseC.main.temp - 273.15;
+    currentTempConv = currentTempConv.toFixed(2);
+    currentTemp.text("Temperature: " + currentTempConv + " °C");
 
     var currentWind = $("<p>");
-    currentWind.text('Wind: ' + response.wind.speed + 'KpH')
+    currentWind.text("Wind: " + responseC.wind.speed + "KpH");
 
     var currentHumidity = $("<p>");
-    currentHumidity.text('Humidity: ' + response.main.humidity + '%')
+    currentHumidity.text("Humidity: " + responseC.main.humidity + "%");
 
-    $('#today').empty()
     $("#today").append(todayCity, currentTemp, currentWind, currentHumidity);
 
-    
+    var latitude = responseC.coord.lat;
+    var longitude = responseC.coord.lon;
+    var queryURLForecast =
+      "https://api.openweathermap.org/data/2.5/forecast?lat=" +
+      latitude +
+      "&lon=" +
+      longitude +
+      "&appid=" +
+      apiKey;
+
+    $.ajax({
+      url: queryURLForecast,
+      method: "GET",
+    }).then(function (responseF) {
+      
+        $('#forecast').append('<h3>5-day Forecast:</h3>')
+
+      var result = responseF.list;
+
+      for (var i = 3; i <= 40; i = i + 8) {
+        console.log(i);
+
+        var forecastBlock = $('<div class="forecastBlock">');
+
+        var forecastDate = $("<p>");
+        var forecastDateConv = moment(
+          result[i].dt_txt,
+          "YYYY-MM-D HH:mm:ss"
+        ).format("D/MM/YYYY");
+        forecastDate.text(forecastDateConv);
+
+        var forecastTemp = $("<p>");
+        var forecastTempConv = result[i].main.temp - 273.15;
+        forecastTempConv = forecastTempConv.toFixed(2);
+        forecastTemp.text("Temp: " + forecastTempConv + " °C");
+
+        var forecastWind = $("<p>");
+        forecastWind.text("Wind: " + result[i].wind.speed + "KpH");
+
+        var forecastHumidity = $("<p>");
+        forecastHumidity.text("Humidity: " + result[i].main.humidity + "%");
+
+        forecastBlock.append(
+          forecastDate,
+          forecastTemp,
+          forecastWind,
+          forecastHumidity
+        );
+
+        console.log(forecastBlock);
+        $("#forecast").append(forecastBlock);
+      }
+    });
   });
 });
 
