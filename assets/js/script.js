@@ -21,6 +21,9 @@ for (var i = 0; i < 10; i++) {
 }
 
 // Search
+// Search button styling
+$("#search-button").attr("class", "bg-info");
+
 // When search button clicked
 // Input added to button and prepended to area below button
 $("#search-button").on("click", function (event) {
@@ -28,9 +31,11 @@ $("#search-button").on("click", function (event) {
   // Grab city name
   var searchInput = $("#search-input").val();
   // Make new button
-  var newButton = searchHistory(searchInput);
-  // Add to history
-  $("#history").prepend(newButton);
+  if (searchInput.length > 3) {
+    var newButton = searchHistory(searchInput);
+    // Add to history
+    $("#history").prepend(newButton);
+  }
 
   // Add city to local storage
   // Store up to 10 cities in history
@@ -96,6 +101,8 @@ $(".list-group").on("click", "button.cityButton", function () {
 
     // Append all info to #today section of page
     $("#today").append(todayCity, currentTemp, currentWind, currentHumidity);
+    // Styling for #today section
+    $("#today").css({ border: "2px solid black", "padding-left": "10px" });
 
     // Set-up to query forecasted weather information
     // Get latitude and longitude for querying forecast
@@ -115,13 +122,20 @@ $(".list-group").on("click", "button.cityButton", function () {
       url: queryURLForecast,
       method: "GET",
     }).then(function (responseF) {
-      $("#forecast").append("<h3>5-day Forecast:</h3>");
+      // Heading for forecast section
+      $("#forecast").append("<h3 id='forecastHeading'>5-day Forecast:</h3>");
+      $("#forecast").css("padding-left", "15px");
+      $("#forecastHeading").css("width", "100%");
 
       //   Check response coming back in console
       console.log(responseF);
 
       // Have to repeat this a few times so var
       var result = responseF.list;
+
+      // Container for forecasts
+      var forecastBlockContainer = $("<div>");
+      forecastBlockContainer.attr("class", "d-flex justify-content-between");
 
       // Forecast shown for 3 -hour blocks for 5 days
       // Loop through in intervals of 8 beginning from 3
@@ -169,8 +183,20 @@ $(".list-group").on("click", "button.cityButton", function () {
           forecastHumidity
         );
 
+        // forecastBlock styling
+        forecastBlock.css({
+          "padding-left": "10px",
+          "padding-right": "25px",
+          "padding-top": "10px",
+          color: "white",
+          "background-color": "rgb(23,50,82)",
+          "margin-right": "40px",
+        });
+
+        forecastBlockContainer.append(forecastBlock);
+
         // Add block to forecast section of page
-        $("#forecast").append(forecastBlock);
+        $("#forecast").append(forecastBlockContainer);
       }
     });
   });

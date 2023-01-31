@@ -48,6 +48,8 @@ Visit the deployed page [here](https://yaszmoon.github.io/FEWDB-week08-Weather-D
 
 It took some time for me to figure out the best way to add and retrieve the city history from local storage. I managed something and limited it to ten for usuability sake. I did not have enough time to figure out how to ensure that when the buttons were regenerated that they did so in the search order once the number of searches had gone over 10.
 
+Had trouble styling the page. This will require further study.
+
 ## Visuals
 
-To be added.
+![Weather Dashboard Example](./assets/images/weather-dashboard.png)
