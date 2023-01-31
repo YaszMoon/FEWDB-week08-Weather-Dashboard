@@ -1,10 +1,23 @@
 // Function to create city buttons
-
 function searchHistory(city) {
   var Button = $('<button type="button" class="cityButton">');
   Button.attr("data-city", city);
   Button.text(city);
   return Button;
+}
+
+// Counter for items in local storage
+var historyCount = 0;
+// Getting city history from local storage
+for (var i = 0; i < 10; i++) {
+  var city = localStorage.getItem("weatherHistory" + [i]);
+  if (city != null) {
+    var buttonHistory = searchHistory(city);
+    $("#history").prepend(buttonHistory);
+
+    // For every city retrieved, increase count by 1
+    historyCount = historyCount + 1;
+  }
 }
 
 // Search
@@ -18,16 +31,24 @@ $("#search-button").on("click", function (event) {
   var newButton = searchHistory(searchInput);
   // Add to history
   $("#history").prepend(newButton);
-});
 
-// TODO: Add code for saving history to local storage
+  // Add city to local storage
+  // Store up to 10 cities in history
+  if (historyCount === 10) {
+    historyCount = 0
+    localStorage.setItem("weatherHistory" + historyCount, searchInput);
+  historyCount = historyCount + 1;
+  }
+  else {
+    localStorage.setItem("weatherHistory" + historyCount, searchInput);
+  historyCount = historyCount + 1;
+}
+});
 
 // When city button clicked
 // Open weather api searched
 // Reulsts appended to current weather and forecast sections
 $(".list-group").on("click", "button.cityButton", function () {
-  console.log("here");
-
   //   Clear all weather results displayed before displaying new request
   $("#today").empty();
   $("#forecast").empty();
