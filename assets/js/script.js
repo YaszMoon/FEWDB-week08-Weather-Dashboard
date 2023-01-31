@@ -34,15 +34,14 @@ $("#search-button").on("click", function (event) {
 
   // Add city to local storage
   // Store up to 10 cities in history
-  if (historyCount === 10) {
-    historyCount = 0
+  if (historyCount >= 10) {
+    historyCount = 0;
     localStorage.setItem("weatherHistory" + historyCount, searchInput);
-  historyCount = historyCount + 1;
+    historyCount = historyCount + 1;
+  } else {
+    localStorage.setItem("weatherHistory" + historyCount, searchInput);
+    historyCount = historyCount + 1;
   }
-  else {
-    localStorage.setItem("weatherHistory" + historyCount, searchInput);
-  historyCount = historyCount + 1;
-}
 });
 
 // When city button clicked
