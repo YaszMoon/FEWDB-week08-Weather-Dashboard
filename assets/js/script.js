@@ -43,8 +43,13 @@ $(".list-group").on("click", "button.cityButton", function () {
     // Info for current date and cuty queried
     var todayDate = moment().format("D MMM YYYY");
     var todayCity = $("<h2 class='mt-1 h3'>");
-    todayCity.text(city + " " + todayDate);
-    // TODO: Add icon to the above. responseC.weather ??
+    todayCity.text(city + " " + todayDate + " ");
+    // Current weather icon
+    var currentIconURL =
+      "https://openweathermap.org/img/wn/" + responseC.weather[0].icon + ".png";
+    var currentIcon = $("<img>");
+    currentIcon.attr("src", currentIconURL);
+    todayCity.append(currentIcon);
 
     // Info for current temperature
     var currentTemp = $("<p>");
@@ -104,7 +109,13 @@ $(".list-group").on("click", "button.cityButton", function () {
         ).format("D/MM/YYYY");
         forecastDate.text(forecastDateConv);
 
-        // TODO: Add icon
+        // Forecasted weather icon
+        var forecastIconURL =
+          "https://openweathermap.org/img/wn/" +
+          result[i].weather[0].icon +
+          ".png";
+        var forecastIcon = $("<img>");
+        forecastIcon.attr("src", forecastIconURL);
 
         // Info for forecasted temperature
         var forecastTemp = $("<p>");
@@ -123,6 +134,7 @@ $(".list-group").on("click", "button.cityButton", function () {
         // Add all pieces to block
         forecastBlock.append(
           forecastDate,
+          forecastIcon,
           forecastTemp,
           forecastWind,
           forecastHumidity
